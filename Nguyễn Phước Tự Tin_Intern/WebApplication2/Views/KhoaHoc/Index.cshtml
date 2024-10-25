@@ -1,0 +1,138 @@
+﻿@model IEnumerable<WebApplication2.Models.KhoaHoc>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh sách khóa học";
+}
+
+<div class="container">
+    <div class="left">
+        <h2 id="monHocTitle">Môn học: </h2>
+
+        <div id="monHocPartial" class="mt-4"></div>
+    </div>
+    <div class="right">
+        <h2>Khóa học </h2>
+        <ul class="list-group">
+            @{
+                int count = 0;
+                foreach (var khoaHoc in Model)
+                {
+                    <li class="list-group-item">
+                        <a href="javascript:void(0);" onclick="loadMonHoc(@khoaHoc.ID, '@khoaHoc.TenKhoaHoc')" class="text-decoration-none text-dark">
+                            @khoaHoc.TenKhoaHoc
+                        </a>
+                    </li>
+                    count++;
+                }
+                while (count < 4)
+                {
+                    <li class="list-group-item">&nbsp;</li>
+                    count++;
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+ 
+    let currentMonHocTitle = "Môn học: ";
+
+    function loadMonHoc(khoaHocId, tenKhoaHoc) {
+        document.getElementById('monHocTitle').innerText = `Môn học: ${tenKhoaHoc}`;
+        fetch(`/KhoaHoc/MonHocByKhoaHoc?khoaHocId=${khoaHocId}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('monHocPartial').innerHTML = html;
+            });
+    }
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .left, .right {
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .left {
+        width: 70%;
+    }
+
+    .right {
+        width: 25%;
+    }
+
+        .left h2, .right h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+    .left h2 {
+        border-bottom: 2px solid #d4ff00;
+        padding-bottom: 5px;
+    }
+
+    .right h2 {
+        border-bottom: 2px solid #d4ff00;
+        padding-bottom: 5px;
+    }
+
+    .left ul, .right ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .left ul li, .right ul li {
+            margin: 5px 0;
+        }
+
+        .left ul li {
+            display: inline-block;
+            width: 45%;
+        }
+
+            .left ul li:nth-child(odd) {
+                border-right: 1px solid #ccc;
+                padding-right: 10px;
+            }
+
+        .right ul li a {
+            text-decoration: none;
+            color: #000;
+        }
+
+            .right ul li a:hover {
+                text-decoration: underline;
+            }
+
+            .right ul li a.active {
+                color: #00f;
+            }
+
+    .notification {
+        position: relative;
+        display: inline-block;
+    }
+
+        .notification .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            padding: 5px 10px;
+            border-radius: 50%;
+            background: #000;
+            color: white;
+        }
+</style>

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WebApplication2.Models.MonHoc>
+
+<div class="container" style="margin-top: 20px;">
+    <ul>
+        @{
+            int counter = 1;
+        }
+        @foreach (var monHoc in Model)
+        {
+            <li>@counter. @monHoc.TenMonHoc</li>
+            counter++;
+        }
+    </ul>
+</div>
